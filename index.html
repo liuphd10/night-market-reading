@@ -96,7 +96,9 @@ header.top { display: flex; align-items: center; justify-content: space-between;
 .choice { background: var(--board); color: var(--ink); border-radius: 16px; min-height: 104px; display: grid; place-items: center; box-shadow: 0 5px 0 #d9c49a; transition: transform .08s; }
 .choice:active { transform: translateY(3px); box-shadow: 0 2px 0 #d9c49a; }
 .choice.zh { font-family: var(--zh); font-weight: 700; font-size: 58px; }
-.choice.pic { font-family: var(--emoji); font-size: 58px; }
+.choice.pic { display: grid; place-items: center; align-content: center; gap: 2px; padding: 8px 4px; }
+.choice.pic .pe { font-family: var(--emoji); font-size: 52px; line-height: 1.1; }
+.choice.pic .pl { font-weight: 800; font-size: 15px; color: var(--ink-soft); }
 .choice.right { background: #c9f1de; box-shadow: 0 5px 0 var(--jade); }
 .choice.wrong { background: #ffd0c7; box-shadow: 0 5px 0 var(--lantern); animation: shake .35s; }
 .choice[disabled] { cursor: default; }
@@ -235,44 +237,44 @@ body.no-py rt { display: none; }
 /* ---------- data ---------- */
 const CHARS = [
   // 食物 food words
-  { c:"牛", py:"niú", en:"cow / beef", e:"🐄", g:"food", tip:"Looks like a cow's face with two horns on top." },
-  { c:"肉", py:"ròu", en:"meat", e:"🥩", g:"food", tip:"A slice of meat with lines of fat inside." },
-  { c:"麵", py:"miàn", en:"noodles", e:"🍜", g:"food", tip:"Left side 麥 means wheat. Noodles are made from wheat." },
-  { c:"雞", py:"jī", en:"chicken", e:"🐔", g:"food", tip:"Right side 隹 is an old drawing of a bird." },
-  { c:"豬", py:"zhū", en:"pig / pork", e:"🐖", g:"food", tip:"Left side 豕 is an old drawing of a pig." },
-  { c:"魚", py:"yú", en:"fish", e:"🐟", g:"food", tip:"Head on top, body in the middle, tail 灬 at the bottom." },
-  { c:"蛋", py:"dàn", en:"egg", e:"🥚", g:"food", tip:"虫 (bug) at the bottom: little creatures hatch from eggs." },
-  { c:"飯", py:"fàn", en:"rice / meal", e:"🍚", g:"food", tip:"Left side 飠 means FOOD. Look for it on the menu!" },
-  { c:"米", py:"mǐ", en:"rice grains", e:"🌾", g:"food", tip:"Rice grains scattered around a cross." },
-  { c:"茶", py:"chá", en:"tea", e:"🍵", g:"food", tip:"艹 on top means plant. Tea is made from leaves." },
-  { c:"奶", py:"nǎi", en:"milk", e:"🥛", g:"food", tip:"女 (woman) on the left: milk comes from mom." },
-  { c:"冰", py:"bīng", en:"ice", e:"🧊", g:"food", tip:"冫 two drops on the left means ice or cold." },
-  { c:"湯", py:"tāng", en:"soup", e:"🥣", g:"food", tip:"氵 three drops on the left means water." },
-  { c:"包", py:"bāo", en:"bun / wrap", e:"🥟", g:"food", tip:"Something wrapped up inside: a bun!" },
-  { c:"餅", py:"bǐng", en:"pancake / flatbread", e:"🥞", g:"food", tip:"飠 on the left again. It's food!" },
-  { c:"豆", py:"dòu", en:"bean", e:"🥜", g:"food", tip:"An old bowl on a stand, used to hold beans." },
-  { c:"油", py:"yóu", en:"oil", e:"🛢️", g:"food", tip:"氵 means liquid. Oil is a liquid." },
-  { c:"炒", py:"chǎo", en:"stir-fry", e:"🔥", g:"food", tip:"火 (fire) on the left. You need fire to stir-fry." },
+  { c:"牛", py:"niú", en:"cow / beef", e:"🐄", lab:"cow", g:"food", tip:"Looks like a cow's face with two horns on top." },
+  { c:"肉", py:"ròu", en:"meat", e:"🥩", lab:"meat", g:"food", tip:"A slice of meat with lines of fat inside." },
+  { c:"麵", py:"miàn", en:"noodles", e:"🍜", lab:"noodles", g:"food", tip:"Left side 麥 means wheat. Noodles are made from wheat." },
+  { c:"雞", py:"jī", en:"chicken", e:"🐔", lab:"chicken", g:"food", tip:"Right side 隹 is an old drawing of a bird." },
+  { c:"豬", py:"zhū", en:"pig / pork", e:"🐷", lab:"pig", g:"food", tip:"Left side 豕 is an old drawing of a pig." },
+  { c:"魚", py:"yú", en:"fish", e:"🐟", lab:"fish", g:"food", tip:"Head on top, body in the middle, tail 灬 at the bottom." },
+  { c:"蛋", py:"dàn", en:"egg", e:"🥚", lab:"egg", g:"food", tip:"虫 (bug) at the bottom: little creatures hatch from eggs." },
+  { c:"飯", py:"fàn", en:"rice / meal", e:"🍚", lab:"cooked rice", g:"food", tip:"Left side 飠 means FOOD. Look for it on the menu!" },
+  { c:"米", py:"mǐ", en:"rice grains", e:"🌾", lab:"rice plant", g:"food", tip:"Rice grains scattered around a cross." },
+  { c:"茶", py:"chá", en:"tea", e:"🍵", lab:"tea", g:"food", tip:"艹 on top means plant. Tea is made from leaves." },
+  { c:"奶", py:"nǎi", en:"milk", e:"🥛", lab:"milk", g:"food", tip:"女 (woman) on the left: milk comes from mom." },
+  { c:"冰", py:"bīng", en:"ice", e:"🧊", lab:"ice", g:"food", tip:"冫 two drops on the left means ice or cold." },
+  { c:"湯", py:"tāng", en:"soup", e:"🍲", lab:"soup", g:"food", tip:"氵 three drops on the left means water." },
+  { c:"包", py:"bāo", en:"bun / wrap", e:"🥟", lab:"bun", g:"food", tip:"Something wrapped up inside: a bun!" },
+  { c:"餅", py:"bǐng", en:"pancake / flatbread", e:"🥞", lab:"pancake", g:"food", tip:"飠 on the left again. It's food!" },
+  { c:"豆", py:"dòu", en:"bean", e:"🥜", lab:"beans", g:"food", tip:"An old bowl on a stand, used to hold beans." },
+  { c:"油", py:"yóu", en:"oil", e:"🛢️", lab:"oil", g:"food", tip:"氵 means liquid. Oil is a liquid." },
+  { c:"炒", py:"chǎo", en:"stir-fry", e:"🍳", lab:"stir-fry", g:"food", tip:"火 (fire) on the left. You need fire to stir-fry." },
   // 味道 taste words
-  { c:"臭", py:"chòu", en:"stinky", e:"🤢", g:"taste", tip:"自 (nose) on top of 犬 (dog). A dog's nose smells EVERYTHING." },
-  { c:"甜", py:"tián", en:"sweet", e:"😋", g:"taste", tip:"舌 (tongue) + 甘 (sweet): sweet on your tongue." },
-  { c:"辣", py:"là", en:"spicy", e:"🌶️", g:"taste", tip:"辛 on the left means hot and burning." },
-  { c:"糖", py:"táng", en:"sugar", e:"🍬", g:"taste", tip:"米 on the left: old sugar was made from rice." },
-  { c:"香", py:"xiāng", en:"yummy smell", e:"👃", g:"taste", tip:"禾 (grain) over 日 (sun): warm grain smells good." },
+  { c:"臭", py:"chòu", en:"stinky", e:"🤢", lab:"stinky", g:"taste", tip:"自 (nose) on top of 犬 (dog). A dog's nose smells EVERYTHING." },
+  { c:"甜", py:"tián", en:"sweet", e:"🍰", lab:"sweet", g:"taste", tip:"舌 (tongue) + 甘 (sweet): sweet on your tongue." },
+  { c:"辣", py:"là", en:"spicy", e:"🌶️", lab:"spicy", g:"taste", tip:"辛 on the left means hot and burning." },
+  { c:"糖", py:"táng", en:"sugar", e:"🍬", lab:"sugar", g:"taste", tip:"米 on the left: old sugar was made from rice." },
+  { c:"香", py:"xiāng", en:"yummy smell", e:"😋", lab:"smells yummy", g:"taste", tip:"禾 (grain) over 日 (sun): warm grain smells good." },
   // 點餐 ordering words
-  { c:"我", py:"wǒ", en:"I / me", e:"🙋", g:"order", tip:"我要… = I want… Start every order with it!" },
-  { c:"要", py:"yào", en:"want", e:"👉", g:"order", tip:"我要一碗 = I want one bowl." },
-  { c:"不", py:"bù", en:"not / no", e:"🙅", g:"order", tip:"不辣 = not spicy. Very useful!" },
-  { c:"大", py:"dà", en:"big", e:"🙆", g:"order", tip:"A person stretching arms out wide: BIG!" },
-  { c:"小", py:"xiǎo", en:"small", e:"🐭", g:"order", tip:"Three little pieces: small." },
-  { c:"少", py:"shǎo", en:"less / a little", e:"🤏", g:"order", tip:"小 with one extra stroke. 少冰 = less ice." },
-  { c:"半", py:"bàn", en:"half", e:"🌓", g:"order", tip:"Cut straight down the middle: half. 半糖 = half sugar." },
-  { c:"去", py:"qù", en:"go away / remove", e:"👋", g:"order", tip:"去冰 = ice, go away! (no ice)" },
-  { c:"杯", py:"bēi", en:"cup", e:"🥤", g:"order", tip:"木 (wood) on the left: old cups were wooden." },
-  { c:"碗", py:"wǎn", en:"bowl", e:"🥣", g:"order", tip:"石 (stone) on the left: bowls are hard like stone." },
-  { c:"份", py:"fèn", en:"a serving", e:"🍽️", g:"order", tip:"亻 (person) + 分 (divide): one person's share." },
-  { c:"一", py:"yī", en:"one", e:"1️⃣", g:"order", tip:"One stroke = one." },
-  { c:"兩", py:"liǎng", en:"two (of something)", e:"2️⃣", g:"order", tip:"Say 兩杯, not 二杯, when you order two." },
+  { c:"我", py:"wǒ", en:"I / me", e:"🙋", lab:"me", g:"order", tip:"我要… = I want… Start every order with it!" },
+  { c:"要", py:"yào", en:"want", e:"🤲", lab:"want", g:"order", tip:"我要一碗 = I want one bowl." },
+  { c:"不", py:"bù", en:"not / no", e:"🙅", lab:"no / not", g:"order", tip:"不辣 = not spicy. Very useful!" },
+  { c:"大", py:"dà", en:"big", e:"🐘", lab:"big", g:"order", tip:"A person stretching arms out wide: BIG!" },
+  { c:"小", py:"xiǎo", en:"small", e:"🐭", lab:"small", g:"order", tip:"Three little pieces: small." },
+  { c:"少", py:"shǎo", en:"less / a little", e:"🤏", lab:"a little", g:"order", tip:"小 with one extra stroke. 少冰 = less ice." },
+  { c:"半", py:"bàn", en:"half", e:"🌗", lab:"half", g:"order", tip:"Cut straight down the middle: half. 半糖 = half sugar." },
+  { c:"去", py:"qù", en:"go away / remove", e:"👋", lab:"go away", g:"order", tip:"去冰 = ice, go away! (no ice)" },
+  { c:"杯", py:"bēi", en:"cup", e:"🥤", lab:"cup", g:"order", tip:"木 (wood) on the left: old cups were wooden." },
+  { c:"碗", py:"wǎn", en:"bowl", e:"🥣", lab:"bowl", g:"order", tip:"石 (stone) on the left: bowls are hard like stone." },
+  { c:"份", py:"fèn", en:"a serving", e:"🍱", lab:"one serving", g:"order", tip:"亻 (person) + 分 (divide): one person's share." },
+  { c:"一", py:"yī", en:"one", e:"☝️", lab:"one", g:"order", tip:"One stroke = one." },
+  { c:"兩", py:"liǎng", en:"two (of something)", e:"✌️", lab:"two", g:"order", tip:"Say 兩杯, not 二杯, when you order two." },
 ];
 const GROUPS = [
   { id:"food", zh:"食物", en:"Food" },
@@ -441,22 +443,24 @@ function startQuiz() {
   Q = { i: 0, n: 10, right: 0, streak: 0, best: 0, earned: 0, list: shuffle(pool.slice(0, 10)) };
   quizQ();
 }
+const CONFUSE = [["飯","米"], ["甜","糖"], ["湯","碗"], ["小","少"], ["冰","去"], ["雞","蛋"], ["豬","肉"], ["牛","肉"], ["不","去"]];
 function quizQ() {
   if (Q.i >= Q.n) return quizEnd();
   const c = Q.list[Q.i];
   const type = Math.random() < 0.65 ? "read" : "find";
-  const others = sample(CHARS.filter(x => x.c !== c.c && x.e !== c.e), 3);
+  const clash = CONFUSE.find(g => g.includes(c.c)) || [];
+  const others = sample(CHARS.filter(x => x.c !== c.c && x.e !== c.e && !clash.includes(x.c)), 3);
   const opts = shuffle([c, ...others]);
   Q.cur = { c, type, hinted: false, done: false };
   const prompt = type === "read"
     ? `<div class="question">這個字是什麼？ Which picture matches?</div><div class="bigzh">${zh(c.c)}</div>`
-    : `<div class="question">哪一個字？ Find the character</div><div class="bigemoji">${c.e}</div><div class="hint-en">${esc(c.en)}</div>`;
+    : `<div class="question">哪一個字？ Find the character</div><div class="bigemoji">${c.e}</div><div class="hint-en">${esc(c.lab)}</div>`;
   $app.innerHTML = `${backBar(`第 ${Q.i + 1} 題 / ${Q.n} · 🔥 ${Q.streak}`)}
     <div class="panel">
       <div class="hud"><div class="progress"><i style="width:${Q.i / Q.n * 100}%"></i></div></div>
       <div class="prompt">${prompt}</div>
       <div class="choices">${opts.map(o => type === "read"
-        ? `<button class="choice pic" data-a="${o.c}" aria-label="${esc(o.en)}">${o.e}</button>`
+        ? `<button class="choice pic" data-a="${o.c}" aria-label="${esc(o.lab)}"><span class="pe">${o.e}</span><span class="pl">${esc(o.lab)}</span></button>`
         : `<button class="choice zh" data-a="${o.c}">${zh(o.c)}</button>`).join("")}</div>
       <div class="tools" style="margin-top:14px"><button class="tool" id="hint">🔊 聽一聽 hint <span class="cost">−1💰</span></button></div>
       <div id="fb"></div>
